@@ -260,6 +260,9 @@ def _get_all_patterns_and_replacements():
         *get_binary_op_pattern_and_replacements(),
         (relu_inplace_pattern, relu_replacement, []),
         (relu_non_inplace_pattern, relu_replacement, []),
+        (adaptive_avg_pool1d_pattern, adaptive_avg_pool1d_replacement, []),
+        (adaptive_avg_pool2d_pattern, adaptive_avg_pool2d_replacement, []),
+        (adaptive_avg_pool3d_pattern, adaptive_avg_pool3d_replacement, []),
     ]
 
 
