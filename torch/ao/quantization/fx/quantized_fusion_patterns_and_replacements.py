@@ -17,6 +17,37 @@ def relu_replacement(x, scale, zero_point):
     x = torch.nn.functional.relu(x)
     return x
 
+def adaptive_avg_pool1d_pattern(x, output_size, scale, zero_point):
+    x = x.dequantize()
+    x = torch.nn.functional.adaptive_avg_pool1d(x, output_size)
+    x = torch.quantize_per_tensor(x, scale, zero_point, torch.quint8)
+    return x
+
+def adaptive_avg_pool1d_replacement(x, output_size, scale, zero_point):
+    x = torch.nn.functional.adaptive_avg_pool1d(x, output_size)
+    return x
+
+def adaptive_avg_pool2d_pattern(x, output_size, scale, zero_point):
+    x = x.dequantize()
+    x = torch.nn.functional.adaptive_avg_pool2d(x, output_size)
+    x = torch.quantize_per_tensor(x, scale, zero_point, torch.quint8)
+    return x
+
+def adaptive_avg_pool2d_replacement(x, output_size, scale, zero_point):
+    x = torch.nn.functional.adaptive_avg_pool2d(x, output_size)
+    return x
+
+def adaptive_avg_pool3d_pattern(x, output_size, scale, zero_point):
+    x = x.dequantize()
+    x = torch.nn.functional.adaptive_avg_pool3d(x, output_size)
+    x = torch.quantize_per_tensor(x, scale, zero_point, torch.quint8)
+    return x
+
+def adaptive_avg_pool3d_replacement(x, output_size, scale, zero_point):
+    x = torch.nn.functional.adaptive_avg_pool3d(x, output_size)
+    return x
+
+
 #
 # Match Filters
 #
