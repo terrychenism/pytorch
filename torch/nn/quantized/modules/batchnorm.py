@@ -40,12 +40,13 @@ class BatchNorm3d(torch.nn.BatchNorm3d):
     r"""This is the quantized version of :class:`~torch.nn.BatchNorm3d`.
     """
 
-    def __init__(self, num_features, eps=1e-5, momentum=0.1, device=None, dtype=None):
+    def __init__(self, num_features, scale=1.0, zero_point=0, eps=1e-5, momentum=0.1, device=None, dtype=None):
         factory_kwargs = {'device': device, 'dtype': dtype}
         super(BatchNorm3d, self).__init__(num_features, **factory_kwargs)
         self.eps = eps
-        self.scale = 1.0
-        self.zero_point = 0
+        self.register_buffer('scale', torch.tensor(scale, **factory_kwargs))
+        self.register_buffer('zero_point', torch.tensor(zero_point, **factory_kwargs))
+
 
     def forward(self, input):
         return torch.ops.quantized.batch_norm3d(input, self.weight, self.bias, self.running_mean,
@@ -65,6 +66,6 @@ class BatchNorm3d(torch.nn.BatchNorm3d):
         new_mod.bias = mod.bias
         new_mod.running_mean = mod.running_mean
         new_mod.running_var = mod.running_var
-        new_mod.scale = float(scale)
-        new_mod.zero_point = int(zero_point)
+        new_mod.scale = scale
+        new_mod.zero_point = zero_point
         return new_mod
